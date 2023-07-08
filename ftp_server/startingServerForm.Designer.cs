@@ -30,39 +30,19 @@ namespace ftp_server
         private void InitializeComponent()
         {
             this.connect_btn = new System.Windows.Forms.Button();
-            this.port_textBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.message = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // connect_btn
             // 
             this.connect_btn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.connect_btn.Location = new System.Drawing.Point(58, 55);
+            this.connect_btn.Location = new System.Drawing.Point(55, 37);
             this.connect_btn.Name = "connect_btn";
             this.connect_btn.Size = new System.Drawing.Size(181, 35);
             this.connect_btn.TabIndex = 2;
             this.connect_btn.Text = "start server";
             this.connect_btn.UseVisualStyleBackColor = true;
             this.connect_btn.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // port_textBox
-            // 
-            this.port_textBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.port_textBox.Location = new System.Drawing.Point(86, 29);
-            this.port_textBox.Name = "port_textBox";
-            this.port_textBox.Size = new System.Drawing.Size(153, 20);
-            this.port_textBox.TabIndex = 3;
-            this.port_textBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(55, 32);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(25, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "port";
             // 
             // message
             // 
@@ -78,16 +58,14 @@ namespace ftp_server
             this.message.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.message.Click += new System.EventHandler(this.message_Click);
             // 
-            // Form1
+            // startingServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(286, 121);
             this.Controls.Add(this.message);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.port_textBox);
             this.Controls.Add(this.connect_btn);
-            this.Name = "Form1";
+            this.Name = "startingServerForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -97,8 +75,6 @@ namespace ftp_server
 
         #endregion
         private System.Windows.Forms.Button connect_btn;
-        private System.Windows.Forms.TextBox port_textBox;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label message;
     }
 }

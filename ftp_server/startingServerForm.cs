@@ -20,22 +20,11 @@ namespace ftp_server
 
         private void button1_Click(object sender, EventArgs e)
         {
-            try
-            {
-                int port = int.Parse(port_textBox.Text);
-                if (port > 0)
-                {
-                    serverForm server1 = new serverForm(port);
-                    this.Hide();
-                    server1.ShowDialog();
-                    this.Close();
-                }
-            }
-            catch (System.FormatException){
-                message.ForeColor = Color.FromName("Red");
-                message.Text = "Wprowadzono bęłdny port";
-            }
-            
+            this.Hide();
+            serverForm server1 = new serverForm();
+            server1.ShowDialog();
+            this.Close();
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

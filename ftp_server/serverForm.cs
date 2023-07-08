@@ -7,25 +7,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Net;
-using System.Net.Sockets;
+
 
 namespace ftp_server
 {
     public partial class serverForm : Form
     {
-        public serverForm(int port)
+        Server server = new Server();
+        public serverForm()
         {
             InitializeComponent();
-            IPHostEntry host = Dns.GetHostEntry("localhost");
-            IPAddress ipAddress = host.AddressList[1];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
-            label.Text = $"hosting on {ipAddress.ToString()}, port: {port}";
+            try
+            {
+                server.startServer();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            /* 
+             while (true)
+             {
+                 label.Text = server.connetion_msg;
+             }*/
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            server.shutDownServer();
             this.Close();
+        }
+
+        private void sendMessageBtn_Click(object sender, EventArgs e)
+        {
+            
+            messagesBox.AppendText("You: " + messageBox.Text + Environment.NewLine);
+            messageBox.Text = "";
+
+        }
+
+        private void label_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
