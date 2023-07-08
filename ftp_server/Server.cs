@@ -8,39 +8,53 @@ using System.Net.Sockets;
 
 namespace ftp_server
 {
+    public class MessageEventArgs: EventArgs
+    {
+        public string message;
+    }
     public class Server
     {
-        Socket listener;
         Socket clientSocket;
-        
+        public delegate void MessageRecievedEventHandler(object source, MessageEventArgs args);
+        public event MessageRecievedEventHandler MessageRecieved;
+
+
         public void startServer()
         {
             IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
+            IPAddress ipAddr = IPAddress.Any;
             IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 11111);
+            Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try
             {
-                listener = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                
+                listener.Bind(localEndPoint);
+                listener.Listen(10);
+                clientSocket = listener.Accept();
+                receiveMessages();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.ToString());
             }
-            finally
+            
+               
+        }
+
+        public void receiveMessages()
+        {
+            while (true)
             {
-                try
-                {
-                    listener.Bind(localEndPoint);
-                    listener.Listen(10);
-                    clientSocket = listener.Accept();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                byte[] bytes = new Byte[1024];
+                string data = null;
+
+                int numByte = clientSocket.Receive(bytes);
+                data += Encoding.ASCII.GetString(bytes, 0, numByte);
+                OnMessageRecieved(data);
+                if (data.IndexOf("<EOF>") > -1)
+                    break;
             }
+
         }
 
         public void sendMessage(string msg)
@@ -54,27 +68,18 @@ namespace ftp_server
 
         }
 
-        public void receiveMessages()
-        {
-            byte[] bytes = new Byte[1024];
-            string data = null;
-            
-            
-            while (true)
-            {
-                int numByte = clientSocket.Receive(bytes);
-
-                data += Encoding.ASCII.GetString(bytes, 0, numByte);
-
-                if (data.IndexOf("<EOF>") > -1)
-                    break;
-            }
-        }
-
         public void shutDownServer()
         {
             clientSocket.Shutdown(SocketShutdown.Both);
             clientSocket.Close();
+        }
+
+        protected virtual void OnMessageRecieved(string message_)
+        {
+            if(MessageRecieved != null)
+            {
+                MessageRecieved(this, new MessageEventArgs() { message = message_ });
+            }
         }
 
     }

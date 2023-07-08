@@ -7,15 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
+using System.Net.Sockets;
 
 
 namespace ftp_server
 {
     public partial class serverForm : Form
     {
+
         Server server = new Server();
         public serverForm()
         {
+            server.MessageRecieved += this.OnMessageRecieved;
             InitializeComponent();
             try
             {
@@ -23,9 +27,9 @@ namespace ftp_server
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine(ex.ToString());
             }
-
+            
             /* 
              while (true)
              {
@@ -35,7 +39,6 @@ namespace ftp_server
 
         private void button1_Click(object sender, EventArgs e)
         {
-            server.shutDownServer();
             this.Close();
         }
 
@@ -51,5 +54,11 @@ namespace ftp_server
         {
 
         }
+        public void OnMessageRecieved(object source, MessageEventArgs args)
+        {
+            messagesBox.AppendText("Him: " + args.message + Environment.NewLine);
+            messageBox.Text = "";
+        }
+
     }
 }

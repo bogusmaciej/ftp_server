@@ -106,6 +106,6 @@ namespace ftp_server
         private System.Windows.Forms.Label label;
         private System.Windows.Forms.TextBox messageBox;
         private System.Windows.Forms.Button sendMessageBtn;
-        private System.Windows.Forms.TextBox messagesBox;
+        public System.Windows.Forms.TextBox messagesBox;
     }
 }
