@@ -17,7 +17,7 @@ namespace ftp_server
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new startingServerForm());
+            Application.Run(new serverForm());
         }
     }
 }

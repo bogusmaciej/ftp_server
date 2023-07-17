@@ -14,12 +14,13 @@ namespace ftp_server
     }
     public class Server
     {
+
         Socket clientSocket;
         public delegate void MessageRecievedEventHandler(object source, MessageEventArgs args);
         public event MessageRecievedEventHandler MessageRecieved;
 
 
-        public void startServer()
+        public async Task startServer()
         {
             IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
             IPAddress ipAddr = IPAddress.Any;
@@ -30,31 +31,34 @@ namespace ftp_server
             {
                 listener.Bind(localEndPoint);
                 listener.Listen(10);
-                clientSocket = listener.Accept();
+                clientSocket = await Task.Run(() => listener.Accept());
+                sendMessage("connected");
                 receiveMessages();
             }
             catch(Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
-            
-               
         }
 
-        public void receiveMessages()
+        public async Task receiveMessages()
         {
             while (true)
             {
                 byte[] bytes = new Byte[1024];
                 string data = null;
 
-                int numByte = clientSocket.Receive(bytes);
-                data += Encoding.ASCII.GetString(bytes, 0, numByte);
-                OnMessageRecieved(data);
-                if (data.IndexOf("<EOF>") > -1)
+                int numByte = await Task.Run(()=> clientSocket.Receive(bytes));
+                if (clientSocket.Connected)
+                {
+                    data += Encoding.ASCII.GetString(bytes, 0, numByte);
+                    OnMessageRecieved(data);
+                }
+                else
+                {
                     break;
+                }
             }
-
         }
 
         public void sendMessage(string msg)
@@ -71,7 +75,19 @@ namespace ftp_server
         public void shutDownServer()
         {
             clientSocket.Shutdown(SocketShutdown.Both);
-            clientSocket.Close();
+            clientSocket.Disconnect(true);
+        }
+
+        public bool IsConnected()
+        {
+            if (clientSocket is null) return false;
+            else if (clientSocket.Connected) return true;
+            else return false;
+        }
+
+        public string getClientIp()
+        {
+            return ((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString();
         }
 
         protected virtual void OnMessageRecieved(string message_)
@@ -80,7 +96,6 @@ namespace ftp_server
             {
                 MessageRecieved(this, new MessageEventArgs() { message = message_ });
             }
-        }
-
+        }   
     }
 }

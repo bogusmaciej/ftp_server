@@ -39,14 +39,24 @@ namespace ftp_server
 
         private void button1_Click(object sender, EventArgs e)
         {
+            server.shutDownServer();
             this.Close();
         }
 
         private void sendMessageBtn_Click(object sender, EventArgs e)
         {
-            
-            messagesBox.AppendText("You: " + messageBox.Text + Environment.NewLine);
-            messageBox.Text = "";
+            if (server.IsConnected())
+            {
+                if(messageBox.Text != "") {
+                    messagesBox.AppendText("You: " + messageBox.Text + Environment.NewLine);
+                    server.sendMessage(messageBox.Text);
+                    messageBox.Text = "";
+                }
+            }
+            else
+            {
+                messagesBox.AppendText("You are not connected" + Environment.NewLine);
+            }
 
         }
 
@@ -56,9 +66,8 @@ namespace ftp_server
         }
         public void OnMessageRecieved(object source, MessageEventArgs args)
         {
-            messagesBox.AppendText("Him: " + args.message + Environment.NewLine);
+            messagesBox.AppendText($"{server.getClientIp()} : {args.message} {Environment.NewLine}");
             messageBox.Text = "";
         }
-
     }
 }

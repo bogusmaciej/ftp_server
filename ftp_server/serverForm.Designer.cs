@@ -42,7 +42,7 @@ namespace ftp_server
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
-            this.button1.Text = "close";
+            this.button1.Text = "Close";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -70,7 +70,7 @@ namespace ftp_server
             this.sendMessageBtn.Name = "sendMessageBtn";
             this.sendMessageBtn.Size = new System.Drawing.Size(75, 23);
             this.sendMessageBtn.TabIndex = 3;
-            this.sendMessageBtn.Text = "send";
+            this.sendMessageBtn.Text = "Send";
             this.sendMessageBtn.UseVisualStyleBackColor = true;
             this.sendMessageBtn.Click += new System.EventHandler(this.sendMessageBtn_Click);
             // 
@@ -79,6 +79,7 @@ namespace ftp_server
             this.messagesBox.Location = new System.Drawing.Point(23, 67);
             this.messagesBox.Multiline = true;
             this.messagesBox.Name = "messagesBox";
+            this.messagesBox.ReadOnly = true;
             this.messagesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.messagesBox.Size = new System.Drawing.Size(348, 127);
             this.messagesBox.TabIndex = 4;
